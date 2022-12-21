@@ -1,12 +1,15 @@
 <template>
-    <div>
-        Index Component
+    <div class="w-96 mx-auto">
+            Personal
     </div>
 </template>
 
 <script>
+
 export default {
-    name: "Index"
+    name: "Personal",
+
+
 }
 </script>
 
