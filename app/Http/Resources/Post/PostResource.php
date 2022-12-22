@@ -17,7 +17,8 @@ class PostResource extends JsonResource
         return [
             'title' => $this->title,
             'content' => $this->content,
-            'image_url' => $this->image->url,
+            'image_url' => $this->image?->url,
+            'date' => $this->created_at->diffForHumans(),
         ];
     }
 }
