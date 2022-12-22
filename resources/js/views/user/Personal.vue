@@ -46,9 +46,12 @@ export default {
     },
     methods: {
         store() {
-            axios.post('/api/post', {title: this.title, content: this.content})
+            const id =  this.image ? this.image.id : null
+            axios.post('/api/posts', {title: this.title, content: this.content, image_id: id})
                 .then(res => {
-                    console.log(res.data)
+                    this.title = '';
+                    this.content = '';
+                    this.image = null;
                 })
         },
         selectFile() {
