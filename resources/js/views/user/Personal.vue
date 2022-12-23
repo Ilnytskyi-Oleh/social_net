@@ -30,26 +30,14 @@
 
         </div>
         <div v-if="posts">
-            <div class="card w-96 bg-base-100 shadow-xl mt-5"
-            v-for="post in posts" :key="post.id"
-            >
-                <figure class="px-10 pt-10">
-                    <img :src="post.image_url" :alt="post.title" class="rounded-xl" />
-                </figure>
-                <div class="card-body items-center text-center">
-                    <h2 class="card-title">{{ post.title }}</h2>
-                    <div>{{ post.content }}</div>
-                    <div class="card-actions w-full justify-end">
-                        <div class=" badge badge-outline">{{ post.date }}</div>
-                    </div>
-                </div>
-
-            </div>
+            <Post  v-for="post in posts" :key="post.id" :post="post"></Post>
         </div>
     </div>
 </template>
 
 <script>
+
+import Post from "../../components/Post.vue";
 
 export default {
     name: "Personal",
@@ -61,6 +49,7 @@ export default {
             posts: [],
         }
     },
+    components:{ Post },
     mounted() {
         this.getPosts()
     },

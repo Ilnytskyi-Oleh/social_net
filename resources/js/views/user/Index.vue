@@ -14,8 +14,11 @@
                     <tr v-for="(user, index) in users" :key="user.id"
                         class="group"
                     >
+
                         <th class="group-hover:bg-gray-100">{{ index + 1 }}</th>
-                        <td class="group-hover:bg-gray-100">{{ user.name }}</td>
+                        <td class="group-hover:bg-gray-100">
+                            <router-link :to="{name: 'user.show', params: {id: user.id}}">{{ user.name }}</router-link>
+                        </td>
                         <td class="group-hover:bg-gray-100">{{ user.email }}</td>
                     </tr>
                     </tbody>
@@ -25,6 +28,8 @@
 </template>
 
 <script>
+
+import show from "./Show.vue";
 
 export default {
     name: "Index",
@@ -37,6 +42,9 @@ export default {
         this.getUsers();
     },
     methods: {
+        show() {
+            return show
+        },
         getUsers(){
             axios.get('/api/users')
                 .then(res => {
