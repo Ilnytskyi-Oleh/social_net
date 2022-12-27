@@ -2,10 +2,18 @@
     <div>
         <div class="flex justify-between p-8 w-96 mx-auto">
 
-            <router-link v-if="!token" :to="{ name: 'user.login'}">Login</router-link>
-            <router-link v-if="token" :to="{ name: 'user.index'}">Users</router-link>
-            <router-link v-if="token" :to="{ name: 'user.personal'}">Personal</router-link>
-            <router-link v-if="!token" :to="{ name: 'user.registration'}">Registration</router-link>
+            <router-link v-if="!token" active-class="underline text-blue-500"
+                         class="hover:underline" :to="{ name: 'user.login'}">Login
+            </router-link>
+            <router-link v-if="token" active-class="underline text-blue-500" class="hover:underline"
+                         :to="{ name: 'user.index'}">Users
+            </router-link>
+            <router-link v-if="token" active-class="underline text-blue-500" class="hover:underline"
+                         :to="{ name: 'user.personal'}">Personal
+            </router-link>
+            <router-link v-if="!token" active-class="underline text-blue-500" class="hover:underline"
+                         :to="{ name: 'user.registration'}">Registration
+            </router-link>
             <a v-if="token" @click.prevent="logout" href="#">Logout</a>
         </div>
 
@@ -40,7 +48,7 @@ export default {
 
         logout() {
             axios.post('/logout')
-                .then( res => {
+                .then(res => {
                     localStorage.removeItem('x_xsrf_token')
                     this.$router.push({name: 'user.login'})
                 })
