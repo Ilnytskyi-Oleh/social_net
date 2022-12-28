@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\User\UserResource;
+use App\Models\LikedPost;
 use App\Models\Post;
 use App\Models\SubscriberFollowing;
 use App\Models\User;
@@ -39,11 +40,5 @@ class UserController extends Controller
         return $data;
     }
 
-    public function feed()
-    {
-        $ids = auth()->user()->followings()->get()->pluck('id')->toArray();
-        $posts =  Post::whereIn('user_id', $ids)->get();
 
-        return PostResource::collection($posts);
-    }
 }

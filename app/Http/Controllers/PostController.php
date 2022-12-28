@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Resources\Post\PostResource;
+use App\Models\LikedPost;
 use App\Models\Post;
 use App\Models\PostImage;
+use App\Models\SubscriberFollowing;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +17,19 @@ class PostController extends Controller
     public function index(){
 
         $posts = Post::where('user_id', auth()->id())->latest()->get();
+
+        $posts = Post::isLikedPosts($posts);
+
+        return PostResource::collection($posts);
+    }
+
+    public function feed()
+    {
+        $ids = auth()->user()->followings()->get()->pluck('id')->toArray();
+
+        $posts =  Post::whereIn('user_id', $ids)->get();
+
+        $posts = Post::isLikedPosts($posts);
 
         return PostResource::collection($posts);
     }
@@ -54,5 +70,11 @@ class PostController extends Controller
                 'post_id' => $post->id,
             ]);
         }
+    }
+    public function toggleLike(Post $post) {
+        $res = auth()->user()->likes()->toggle($post->id);
+
+        $data['is_liked'] = count($res['attached']) > 0;
+        return $data;
     }
 }

@@ -12,7 +12,7 @@ const router = createRouter({
             name: 'user.show'
         },
         {
-            path: '/users/feed', component: () => import('../views/user/Feed.vue'),
+            path: '/posts/feed', component: () => import('../views/user/Feed.vue'),
             name: 'user.feed'
         },
         {

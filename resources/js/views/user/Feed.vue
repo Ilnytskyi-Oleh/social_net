@@ -23,7 +23,7 @@ export default {
     },
     methods: {
         getPosts() {
-          axios.get(`/api/users/feed`)
+          axios.get(`/api/posts/feed`)
               .then(res => {
                   this.posts = res.data.data;
               })

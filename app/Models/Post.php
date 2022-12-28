@@ -18,4 +18,19 @@ class Post extends Model
         return $this->hasOne(PostImage::class, 'post_id', 'id')
             ->whereNotNull('post_id');
     }
+
+    public static function isLikedPosts($posts)
+    {
+
+        $likeIds = LikedPost::where('user_id', auth()->id())
+            ->get('post_id')->pluck('post_id')->toArray();
+
+        foreach ($posts as $post) {
+            if (in_array($post->id, $likeIds)) {
+                $post->is_liked = true;
+            }
+        }
+
+         return $posts;
+    }
 }
