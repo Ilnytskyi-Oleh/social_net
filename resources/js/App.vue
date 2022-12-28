@@ -9,6 +9,9 @@
                          :to="{ name: 'user.index'}">Users
             </router-link>
             <router-link v-if="token" active-class="underline text-blue-500" class="hover:underline"
+                         :to="{ name: 'user.feed'}">Feed
+            </router-link>
+            <router-link v-if="token" active-class="underline text-blue-500" class="hover:underline"
                          :to="{ name: 'user.personal'}">Personal
             </router-link>
             <router-link v-if="!token" active-class="underline text-blue-500" class="hover:underline"
