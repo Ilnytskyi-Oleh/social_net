@@ -10,7 +10,7 @@ class Post extends Model
     protected $table = 'posts';
     protected $guarded = false;
 
-    protected $with = ['image', 'likedUsers'];
+    protected $with = ['image', 'likedUsers', 'repostedPost'];
 
     protected $withCount = [
         'likedUsers',
@@ -42,5 +42,10 @@ class Post extends Model
         }
 
          return $posts;
+    }
+
+    public function repostedPost()
+    {
+        return $this->belongsTo(Post::class, 'parent_id', 'id');
     }
 }
