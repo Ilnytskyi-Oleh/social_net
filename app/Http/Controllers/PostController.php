@@ -25,11 +25,14 @@ class PostController extends Controller
 
     public function feed()
     {
-        $ids = auth()->user()->followings()->get()->pluck('id')->toArray();
+        $ids = auth()->user()->followings()->latest()->get()->pluck('id')->toArray();
 
-        $posts =  Post::whereIn('user_id', $ids)->get();
+        $likedPostIds = LikedPost::where('user_id', auth()->id())
+            ->get('post_id')->pluck('post_id')->toArray();
 
-        $posts = Post::isLikedPosts($posts);
+        $posts = Post::whereIn('user_id', $ids)
+            ->whereNotIn('id', $likedPostIds)
+            ->get();
 
         return PostResource::collection($posts);
     }
@@ -73,7 +76,6 @@ class PostController extends Controller
     }
     public function toggleLike(Post $post) {
         $res = auth()->user()->likes()->toggle($post->id);
-
         $data['is_liked'] = count($res['attached']) > 0;
         $data['liked_users_count'] = $post->fresh()->liked_users_count;
         return $data;

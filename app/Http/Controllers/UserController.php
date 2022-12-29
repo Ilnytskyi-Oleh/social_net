@@ -28,7 +28,9 @@ class UserController extends Controller
 
     public function post(User $user)
     {
-        $posts = $user->posts;
+        $posts = $user->posts()->latest()->get();
+
+        $posts = Post::isLikedPosts($posts);
 
         return PostResource::collection($posts);
     }
