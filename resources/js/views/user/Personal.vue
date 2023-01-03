@@ -1,13 +1,16 @@
 <template>
     <div class="w-96 mx-auto p-4">
-        <div class="space-y-5 ">
+        <div class="space-y-5">
             <div>
                 <input v-model="title" type="text" placeholder="title"
-                       class="input input-bordered input-primary w-full "/>
+                       class="input input-bordered input-primary w-full"/>
+                <Error v-if="errors.title" v-for="error in errors.title" :error="error"></Error>
             </div>
+
             <div>
                 <textarea v-model="content" name="content" placeholder="content"
                           class="textarea textarea-primary w-full"></textarea>
+                <Error v-if="errors.content" v-for="error in errors.content" :error="error"></Error>
             </div>
 
             <div class="flex">
@@ -38,6 +41,7 @@
 <script>
 
 import Post from "../../components/Post.vue";
+import Error from "../../components/Error.vue";
 
 export default {
     name: "Personal",
@@ -47,9 +51,10 @@ export default {
             content: '',
             image: null,
             posts: [],
+            errors: [],
         }
     },
-    components:{ Post },
+    components:{Error, Post },
     mounted() {
         this.getPosts()
     },
@@ -67,7 +72,10 @@ export default {
                     this.title = '';
                     this.content = '';
                     this.image = null;
-                    this.posts.unshift(res.data.data)
+                    this.posts.unshift(res.data.data);
+                })
+                .catch(e => {
+                   this.errors = e.response.data.errors;
                 })
         },
         selectFile() {

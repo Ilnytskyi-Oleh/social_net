@@ -5,9 +5,10 @@
         </figure>
         <div class="card-body items-center text-center">
 
-            <div v-if="post.reposted_post" class="p-4 bg-emerald-100 border border-emerald-300 rounded-tr-xl rounded-br-xl  w-full space-y-2 border-l-4 border-l-blue-600">
+            <div v-if="post.reposted_post"
+                 class="p-4 bg-emerald-100 border border-emerald-300 rounded-tr-xl rounded-br-xl  w-full space-y-2 border-l-4 border-l-blue-600">
                 <h2 class="text-xl font-semibold text-center">{{ post.reposted_post.title }}</h2>
-                <img v-if="post.reposted_post.image_url" :src="post.reposted_post.image_url"  class="rounded-xl"/>
+                <img v-if="post.reposted_post.image_url" :src="post.reposted_post.image_url" class="rounded-xl"/>
                 <div class="text-left">{{ post.reposted_post.content }}</div>
             </div>
 
@@ -31,7 +32,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/>
                     </svg>
-                    <span>0</span>
+                    <span >{{ post.reposted_posts_count }}</span>
                 </div>
                 <div class="badge badge-outline ml-auto">{{ post.date }}</div>
             </div>
@@ -40,10 +41,13 @@
                     <div>
                         <input v-model="title" type="text" placeholder="title"
                                class="input input-bordered input-primary w-full "/>
+                        <Error v-if="errors.title" v-for="error in errors.title" :error="error"></Error>
                     </div>
+
                     <div>
                 <textarea v-model="content" name="content" placeholder="content"
                           class="textarea textarea-primary w-full"></textarea>
+                        <Error v-if="errors.content" v-for="error in errors.content" :error="error"></Error>
                     </div>
 
                     <div class="flex flex-row justify-end">
@@ -52,22 +56,59 @@
 
                 </div>
             </div>
+
+            <div v-if="post.comments_count > 0" class="w-full mt-4 space-y-5 text-left">
+                <div class="flex justify-between">
+                    <a href="#"
+                       class="btn btn-accent btn-xs"
+                       v-if="!isShowed"
+                       @click.prevent="getComments(post)">Show {{ post.comments_count }} comments</a>
+                    <a href="#"
+                       class=""
+                       v-if="isShowed"
+                       @click.prevent="isShowed = false">
+                        <button class="btn btn-circle btn-xs ">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </a>
+                </div>
+
+                <div class="mt-4" v-if="this.comments.length && isShowed">
+                    <Comment v-for="comment in this.comments" :comment="comment" :key="comment.id"></Comment>
+                </div>
+            </div>
+
+            <div class="w-full mt-4 space-y-5">
+                <textarea
+                    v-model="body"
+                    name="body" placeholder="body"
+                    class="textarea textarea-primary w-full"></textarea>
+                <div class="flex flex-row justify-end">
+                    <a href="#" @click.prevent="storeComment(post)" class="btn btn-primary">Comment</a>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-
+import Error from "./Error.vue";
+import Comment from "./Comment.vue";
 export default {
     name: "Post",
     data() {
         return {
-            title:'',
-            content:'',
+            title: '',
+            content: '',
+            body: '',
             is_repost: false,
             repostedId: null,
+            errors:[],
+            comments:[],
+            isShowed:false,
         }
     },
+    components:{Comment, Error},
     props: ['post'],
     mounted() {
 
@@ -81,16 +122,35 @@ export default {
                 })
         },
         openRepost(post) {
-            if(this.$route.name === 'user.personal') return;
+            if (this.$route.name === 'user.personal') return;
             this.is_repost = !this.is_repost
         },
         repost(post) {
-            axios.post(`/api/posts/${post.id}/repost`,{title: this.title, content: this.content})
+            axios.post(`/api/posts/${post.id}/repost`, {title: this.title, content: this.content})
                 .then(res => {
                     this.title = '';
                     this.content = '';
                 })
+                .catch(e => {
+                    this.errors = e.response.data.errors
+                })
         },
+        storeComment(post) {
+            axios.post(`/api/posts/${post.id}/comment`, {body: this.body})
+                .then(res => {
+                    this.body = '';
+                    this.comments.unshift(res.data.data);
+                    this.isShowed = true
+
+                })
+        },
+        getComments(post) {
+            axios.get(`/api/posts/${post.id}/comment`)
+                .then(res => {
+                    this.comments = res.data.data;
+                    this.isShowed = true
+                })
+        }
     }
 }
 </script>
