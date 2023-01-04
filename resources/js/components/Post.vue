@@ -158,6 +158,7 @@ export default {
                     this.comment = null;
                     this.comments.unshift(res.data.data);
                     this.isShowed = true
+                    post.comments_count++;
                 })
         },
         getComments(post) {
