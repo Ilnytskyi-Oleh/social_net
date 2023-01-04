@@ -108,7 +108,7 @@ class PostController extends Controller
 
     public function commentList(Post $post)
     {
-        return CommentResource::collection($post->comments);
+        return CommentResource::collection($post->comments()->latest()->get());
     }
 
 

@@ -32,7 +32,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186l9.566-5.314m-9.566 7.5l9.566 5.314m0 0a2.25 2.25 0 103.935 2.186 2.25 2.25 0 00-3.935-2.186zm0-12.814a2.25 2.25 0 103.933-2.185 2.25 2.25 0 00-3.933 2.185z"/>
                     </svg>
-                    <span >{{ post.reposted_posts_count }}</span>
+                    <span>{{ post.reposted_posts_count }}</span>
                 </div>
                 <div class="badge badge-outline ml-auto">{{ post.date }}</div>
             </div>
@@ -68,17 +68,30 @@
                        v-if="isShowed"
                        @click.prevent="isShowed = false">
                         <button class="btn btn-circle btn-xs ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
                         </button>
                     </a>
                 </div>
 
                 <div class="mt-4" v-if="this.comments.length && isShowed">
-                    <Comment v-for="comment in this.comments" :comment="comment" :key="comment.id"></Comment>
+                    <Comment v-for="comment in this.comments" :comment="comment" :key="comment.id"
+                             @reply="setParentId(comment)"
+                             class="my-3"
+                    ></Comment>
                 </div>
             </div>
 
             <div class="w-full mt-4 space-y-5">
+                <div v-if="comment" class="flex">
+                    <p class="text-left">Answered to <b>{{ comment.user.name }}</b>:</p>
+                    <button class="btn btn-circle btn-xs" @click.prevent="this.comment = null">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
                 <textarea
                     v-model="body"
                     name="body" placeholder="body"
@@ -94,6 +107,7 @@
 <script>
 import Error from "./Error.vue";
 import Comment from "./Comment.vue";
+
 export default {
     name: "Post",
     data() {
@@ -103,12 +117,14 @@ export default {
             body: '',
             is_repost: false,
             repostedId: null,
-            errors:[],
-            comments:[],
-            isShowed:false,
+            errors: [],
+            comments: [],
+            isShowed: false,
+            parentId: null,
+            comment: null,
         }
     },
-    components:{Comment, Error},
+    components: {Comment, Error},
     props: ['post'],
     mounted() {
 
@@ -136,12 +152,12 @@ export default {
                 })
         },
         storeComment(post) {
-            axios.post(`/api/posts/${post.id}/comment`, {body: this.body})
+            axios.post(`/api/posts/${post.id}/comment`, {body: this.body, parent_id: this.comment?.id})
                 .then(res => {
                     this.body = '';
+                    this.comment = null;
                     this.comments.unshift(res.data.data);
                     this.isShowed = true
-
                 })
         },
         getComments(post) {
@@ -150,6 +166,9 @@ export default {
                     this.comments = res.data.data;
                     this.isShowed = true
                 })
+        },
+        setParentId(comment) {
+            this.comment = comment;
         }
     }
 }
