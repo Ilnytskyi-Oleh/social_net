@@ -13,7 +13,7 @@ class Post extends Model
     protected $table = 'posts';
     protected $guarded = false;
 
-    protected $with = ['image', 'likedUsers', 'repostedPost'];
+    protected $with = ['image', 'likedUsers', 'repostedPost', 'user'];
 
     protected $withCount = [
         'likedUsers', 'comments'
@@ -86,6 +86,11 @@ class Post extends Model
         return new Attribute(
             get: fn () => $this->created_at->diffForHumans(),
         );
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 }

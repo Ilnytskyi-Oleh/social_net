@@ -2,6 +2,7 @@
     <div class="card w-96 bg-base-100 shadow-xl mt-5">
         <figure class="px-10 pt-10" v-if="post.image_url ">
             <img :src="post.image_url" :alt="post.title" class="rounded-xl"/>
+
         </figure>
         <div class="card-body items-center text-center">
 
@@ -10,10 +11,14 @@
                 <h2 class="text-xl font-semibold text-center">{{ post.reposted_post.title }}</h2>
                 <img v-if="post.reposted_post.image_url" :src="post.reposted_post.image_url" class="rounded-xl"/>
                 <div class="text-left">{{ post.reposted_post.content }}</div>
+                <div class="text-right">
+                    <router-link class=" text-sm text-gray-400 cursor-pointer " :to="{name: 'user.show', params: {id: post.reposted_post.user.id}}">{{ post.reposted_post.user.name}}:</router-link>
+                </div>
             </div>
 
             <h2 class="card-title">{{ post.title }}</h2>
             <div>{{ post.content }}</div>
+            <router-link class=" text-sm text-gray-400 cursor-pointer ml-auto" :to="{name: 'user.show', params: {id: post.user.id}}">{{ post.user.name}}:</router-link>
             <div class="card-actions w-full items-center">
                 <div class="flex items-center gap-x-1">
                     <svg
@@ -157,7 +162,7 @@ export default {
                     this.body = '';
                     this.comment = null;
                     this.comments.unshift(res.data.data);
-                    this.isShowed = true
+                    this.isShowed = true;
                     post.comments_count++;
                 })
         },
@@ -165,7 +170,7 @@ export default {
             axios.get(`/api/posts/${post.id}/comment`)
                 .then(res => {
                     this.comments = res.data.data;
-                    this.isShowed = true
+                    this.isShowed = true;
                 })
         },
         setParentId(comment) {
