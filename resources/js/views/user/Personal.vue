@@ -1,5 +1,6 @@
 <template>
     <div class="w-96 mx-auto p-4">
+        <Stat :stats="stats"></Stat>
         <div class="space-y-5">
             <div>
                 <input v-model="title" type="text" placeholder="title"
@@ -42,6 +43,7 @@
 
 import Post from "../../components/Post.vue";
 import Error from "../../components/Error.vue";
+import Stat from "../../components/Stat.vue";
 
 export default {
     name: "Personal",
@@ -52,13 +54,21 @@ export default {
             image: null,
             posts: [],
             errors: [],
+            stats: [],
         }
     },
-    components:{Error, Post },
+    components:{ Error, Post , Stat},
     mounted() {
         this.getPosts()
+        this.getStats()
     },
     methods: {
+        getStats(){
+            axios.post('/api/users/stats', {id: null})
+                .then(res => {
+                    this.stats = res.data.data
+                })
+        },
         getPosts() {
           axios.get('/api/posts')
               .then(res => {
