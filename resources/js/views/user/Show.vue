@@ -28,13 +28,13 @@ export default {
     },
     methods: {
         getStats(){
-            axios.post('/api/users/stats', {id: this.userId})
+            axios.post('/api/users/stats', { id: this.userId })
                 .then(res => {
                     this.stats = res.data.data
                 })
         },
         getPosts() {
-          axios.get(`/api/users/${this.userId}/posts`)
+            axios.get(`/api/users/${this.userId}/posts`)
               .then(res => {
                   this.posts = res.data.data;
               })
