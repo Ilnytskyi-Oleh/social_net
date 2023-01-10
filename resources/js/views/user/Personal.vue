@@ -1,5 +1,5 @@
 <template>
-    <div class="w-96 mx-auto p-4">
+    <div class="mx-auto max-w-xs">
         <Stat :stats="stats"></Stat>
         <div class="space-y-5">
             <div>

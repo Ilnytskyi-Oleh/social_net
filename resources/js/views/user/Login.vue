@@ -1,17 +1,16 @@
 <template>
-    <div class="w-96 mx-auto">
+    <div class=" mx-auto max-w-xs space-y-4">
         <div>
             <input v-model="email" type="email" :placeholder="this.errors?.email ?? 'email'"
-
-                   :class="['w-96 p-1 mb-2 border border-inherit rounded-lg', this.errors?.email ? 'placeholder-red-900 border-red-800' : '']">
+                   :class="['input input-bordered w-full ', this.errors?.email ? 'placeholder-red-900 border-red-800' : '']">
         </div>
         <div>
             <input v-model="password" type="password" :placeholder="this.errors?.password ?? 'password'"
 
-                   :class="['w-96 p-1 mb-2 border border-inherit rounded-lg', this.errors?.password ? 'placeholder-red-900 border-red-800' : '']">
+                   :class="['input input-bordered w-full ', this.errors?.password ? 'placeholder-red-900 border-red-800' : '']">
         </div>
-        <div>
-            <input @click.prevent="login" type="submit" value="login" class="block float-right mx-auto w-32 p-1 bg-sky-400 text-white rounded-lg">
+        <div class="text-right ">
+            <input @click.prevent="login" type="submit" value="login" class="btn btn-primary ">
         </div>
     </div>
 </template>

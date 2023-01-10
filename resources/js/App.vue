@@ -1,26 +1,26 @@
 <template>
     <div>
-        <div class="flex justify-between p-8 w-96 mx-auto">
-
-            <router-link v-if="!token" active-class="underline text-blue-500"
-                         class="hover:underline" :to="{ name: 'user.login'}">Login
+        <div class="flex justify-between py-6 max-w-xs  mx-auto">
+            <router-link v-if="!token" active-class="!btn-success"
+                         class="btn btn-sm btn-link" :to="{ name: 'user.login'}">Login
             </router-link>
-            <router-link v-if="token" active-class="underline text-blue-500" class="hover:underline"
+            <router-link v-if="token" active-class="!btn-success" class="btn btn-sm  btn-link"
                          :to="{ name: 'user.index'}">Users
             </router-link>
-            <router-link v-if="token" active-class="underline text-blue-500" class="hover:underline"
+            <router-link v-if="token" active-class="!btn-success" class="btn btn-sm  btn-link"
                          :to="{ name: 'user.feed'}">Feed
             </router-link>
-            <router-link v-if="token" active-class="underline text-blue-500" class="hover:underline"
+            <router-link v-if="token" active-class="!btn-success" class="btn btn-sm  btn-link"
                          :to="{ name: 'user.personal'}">Personal
             </router-link>
-            <router-link v-if="!token" active-class="underline text-blue-500" class="hover:underline"
+            <router-link v-if="!token" active-class="!btn-success" class="btn btn-sm  btn-link"
                          :to="{ name: 'user.registration'}">Registration
             </router-link>
-            <a v-if="token" @click.prevent="logout" href="#">Logout</a>
+            <a v-if="token" class="btn btn-sm  btn-link" @click.prevent="logout" href="#">Logout</a>
         </div>
-
-        <router-view></router-view>
+        <div class="p-4">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 

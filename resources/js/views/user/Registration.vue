@@ -1,25 +1,28 @@
 <template>
     <div>
-        <div class="w-96 mx-auto">
+        <div class=" mx-auto max-w-xs space-y-4">
 
             <div>
-                <input v-model="name" type="name" placeholder="name"
-                       class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+                <input v-model="name" type="text" placeholder="name"
+                       class="input input-bordered w-full">
             </div>
             <div>
-                <input v-model="email" type="email" placeholder="email"
-                       class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+                <input v-model="email" type="email" placeholder="email" autocomplete="off"
+                       class="input input-bordered w-full">
             </div>
             <div>
-                <input v-model="password" type="password" placeholder="password"
-                       class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+                <input v-model="password" type="password" placeholder="password" autocomplete="off"
+                       class="input input-bordered w-full">
             </div>
             <div>
-                <input v-model="password_confirmation" type="password" placeholder="password_confirmation"
-                       class="w-96 p-1 mb-2 border border-inherit rounded-lg">
+                <input v-model="password_confirmation" type="password" placeholder="password confirmation"
+                       class="input input-bordered w-full">
             </div>
-            <input @click.prevent="register" type="submit" value="register"
-                   class="block float-right mx-auto w-32 p-1 bg-sky-400 text-white rounded-lg">
+            <div class="text-right">
+
+                <input @click.prevent="register" type="submit" value="register"
+                       class="btn btn-primary">
+            </div>
         </div>
     </div>
 </template>

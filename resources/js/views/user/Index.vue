@@ -1,5 +1,5 @@
 <template>
-    <div class="w-96 mx-auto">
+    <div class="max-w-xs  mx-auto text-sm">
             <div class="overflow-x-auto" v-if="users[0]">
                 <table class="table w-full">
                     <!-- head -->
