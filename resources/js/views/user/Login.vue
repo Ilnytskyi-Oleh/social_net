@@ -10,7 +10,7 @@
                    :class="['input input-bordered w-full ', this.errors?.password ? 'placeholder-red-900 border-red-800' : '']">
         </div>
         <div class="text-right ">
-            <input @click.prevent="login" type="submit" value="login" class="btn btn-primary ">
+            <button @click.prevent="login" type="submit" class="btn btn-primary ">Login</button>
         </div>
     </div>
 </template>

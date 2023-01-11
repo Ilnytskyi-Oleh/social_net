@@ -1,5 +1,5 @@
 <template>
-    <div class="w-96 mx-auto p-4">
+    <div class="max-w-xs mx-auto p-4">
         <Stat :stats="stats"></Stat>
         <div v-if="posts">
             <Post  v-for="post in posts" :key="post.id" :post="post"></Post>

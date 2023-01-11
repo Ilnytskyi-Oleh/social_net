@@ -1,5 +1,5 @@
 <template>
-    <div class="card w-96 bg-base-100 shadow-xl mt-5">
+    <div class="card bg-base-100 shadow-xl mt-5">
         <figure class="px-10 pt-10" v-if="post.image_url ">
             <img :src="post.image_url" :alt="post.title" class="rounded-xl"/>
 
